@@ -12,21 +12,43 @@
 
 <style>
 
-* { box-sizing: border-box; }
-
-body {
+html, body {
 
   margin: 0;
 
-  min-height: 100vh;
+  padding: 0;
 
-  background:
+  min-height: 100%;
 
-    radial-gradient(circle at 50% 10%, #183b70 0%, #0b2146 32%, #050d20 70%, #020713 100%);
+}
+
+body {
+
+  background: linear-gradient(
+
+    180deg,
+
+    #17396b 0%,
+
+    #0d244b 35%,
+
+    #07152f 70%,
+
+    #030914 100%
+
+  );
 
   color: #fffaf0;
 
   font-family: Georgia, "Times New Roman", serif;
+
+}
+
+.page {
+
+  min-height: 100vh;
+
+  padding: 40px 18px;
 
   display: flex;
 
@@ -34,16 +56,338 @@ body {
 
   align-items: center;
 
-  padding: 24px 18px;
-
 }
 
 .card {
 
   width: 100%;
 
-  max-width: 480px;
+  max-width: 430px;
+
+  background: rgba(4, 14, 35, 0.88);
+
+  border: 1px solid #d7b96f;
+
+  border-radius: 28px;
+
+  padding: 42px 24px;
 
   text-align: center;
 
-  padding: 45px 25px 35px;
+  box-shadow:
+
+    0 20px 60px rgba(0,0,0,.45);
+
+}
+
+.stars {
+
+  color: #d7b96f;
+
+  font-size: 22px;
+
+  letter-spacing: 8px;
+
+  margin-bottom: 20px;
+
+}
+
+.save {
+
+  font-family: Arial, sans-serif;
+
+  font-size: 12px;
+
+  font-weight: bold;
+
+  letter-spacing: .35em;
+
+  text-transform: uppercase;
+
+  color: #d7b96f;
+
+  margin-bottom: 28px;
+
+}
+
+.names {
+
+  font-size: 52px;
+
+  line-height: .95;
+
+  margin: 0;
+
+  font-weight: normal;
+
+}
+
+.amp {
+
+  display: block;
+
+  font-size: 34px;
+
+  font-style: italic;
+
+  color: #d7b96f;
+
+  margin: 8px 0;
+
+}
+
+.line {
+
+  width: 70px;
+
+  height: 1px;
+
+  background: #d7b96f;
+
+  margin: 28px auto;
+
+}
+
+.date {
+
+  font-family: Arial, sans-serif;
+
+  color: #d7b96f;
+
+  font-size: 18px;
+
+  letter-spacing: .20em;
+
+  margin-bottom: 12px;
+
+}
+
+.location {
+
+  color: #eee2ca;
+
+  font-size: 17px;
+
+  margin-bottom: 26px;
+
+}
+
+.chapter {
+
+  font-size: 20px;
+
+  font-style: italic;
+
+  margin-bottom: 30px;
+
+}
+
+.question {
+
+  font-family: Arial, sans-serif;
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+  letter-spacing: .08em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 16px;
+
+}
+
+.choice {
+
+  display: block;
+
+  width: 100%;
+
+  margin: 10px 0;
+
+  padding: 16px 14px;
+
+  border-radius: 50px;
+
+  border: 1px solid #d7b96f;
+
+  background: rgba(215,185,111,.08);
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+}
+
+.choice.yes {
+
+  background: #d7b96f;
+
+  color: #07152f;
+
+}
+
+.note {
+
+  color: #cec3ad;
+
+  font-size: 13px;
+
+  font-style: italic;
+
+  line-height: 1.5;
+
+  margin-top: 22px;
+
+}
+
+#response {
+
+  display: none;
+
+  margin-top: 20px;
+
+  padding: 17px;
+
+  border-radius: 16px;
+
+  background: rgba(215,185,111,.12);
+
+  color: #f8e7ba;
+
+  line-height: 1.5;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+<div class="card">
+
+<div class="stars">
+
+✦ · ✧ · ✦
+
+</div>
+
+<div class="save">
+
+Save the Date
+
+</div>
+
+<h1 class="names">
+
+Paula
+
+<span class="amp">
+
+&
+
+</span>
+
+Kanyon
+
+</h1>
+
+<div class="line"></div>
+
+<div class="date">
+
+05 • 16 • 2027
+
+</div>
+
+<div class="location">
+
+Centerville, Massachusetts
+
+</div>
+
+<div class="chapter">
+
+Our next chapter begins…
+
+</div>
+
+<div class="question">
+
+Think you'll be joining us?
+
+</div>
+
+<div id="buttons">
+
+<button class="choice yes"
+
+onclick="reply('YES — Planning to be there')">
+
+YES — Planning to be there
+
+</button>
+
+<button class="choice"
+
+onclick="reply('MAYBE — Still figuring it out')">
+
+MAYBE — Still figuring it out
+
+</button>
+
+<button class="choice"
+
+onclick="reply('NO — Sadly can’t make it')">
+
+NO — Sadly can’t make it
+
+</button>
+
+</div>
+
+<div id="response"></div>
+
+<div class="note">
+
+This is only a preliminary response.<br>
+
+A formal invitation and official RSVP will follow.
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function reply(choice) {
+
+  document.getElementById("buttons").style.display = "none";
+
+  var response = document.getElementById("response");
+
+  response.style.display = "block";
+
+  response.innerHTML =
+
+  "For our test run, you selected:<br><strong>"
+
+  + choice +
+
+  "</strong><br><br>✦ Thank you! ✦";
+
+}
+
+</script>
+
+</body>
+
+</html>
