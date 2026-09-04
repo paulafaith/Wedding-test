@@ -7,9 +7,7 @@
 <title>Paula & Kanyon | Save the Date</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -108,6 +106,22 @@ body {
   margin-bottom: 30px;
 }
 
+.name-input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 22px;
+  border-radius: 12px;
+  border: 1px solid #d7b96f;
+  background: rgba(255,255,255,.08);
+  color: white;
+  font-size: 16px;
+  text-align: center;
+}
+
+.name-input::placeholder {
+  color: #cec3ad;
+}
+
 .question {
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -128,6 +142,7 @@ body {
   color: white;
   font-size: 14px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .choice.yes {
@@ -182,6 +197,14 @@ body {
       Our next chapter begins…
     </div>
 
+    <input
+      id="guestName"
+      class="name-input"
+      type="text"
+      placeholder="Enter your first & last name"
+      autocomplete="name"
+    >
+
     <div class="question">
       Think you'll be joining us?
     </div>
@@ -189,17 +212,17 @@ body {
     <div id="buttons">
 
       <button class="choice yes"
-      onclick="reply('YES — Planning to be there')">
+        onclick="reply('YES — Planning to be there')">
         YES — Planning to be there
       </button>
 
       <button class="choice"
-      onclick="reply('MAYBE — Still figuring it out')">
+        onclick="reply('MAYBE — Still figuring it out')">
         MAYBE — Still figuring it out
       </button>
 
       <button class="choice"
-      onclick="reply('NO — Sadly can’t make it')">
+        onclick="reply('NO — Sadly can’t make it')">
         NO — Sadly can’t make it
       </button>
 
@@ -216,18 +239,57 @@ body {
 </div>
 
 <script>
+
+const WEB_APP_URL =
+"https://script.google.com/macros/s/AKfycbwyiCv8o0fek283ifx5uFzoRvW0az7070JGDukSLQW5RcDFIKD5hl2nuaWCt_LVKuj9/exec";
+
 function reply(choice) {
-  document.getElementById("buttons").style.display = "none";
 
-  var response = document.getElementById("response");
+  const guestName =
+    document.getElementById("guestName").value.trim();
 
+  if (!guestName) {
+    alert("Please enter your first and last name.");
+    return;
+  }
+
+  const buttons = document.getElementById("buttons");
+  const response = document.getElementById("response");
+
+  buttons.style.display = "none";
   response.style.display = "block";
+  response.innerHTML = "Sending your response…";
 
-  response.innerHTML =
-    "For our test run, you selected:<br><strong>" +
-    choice +
-    "</strong><br><br>✦ Thank you! ✦";
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({
+      name: guestName,
+      response: choice
+    })
+  })
+  .then(function() {
+    response.innerHTML =
+      "Thank you, <strong>" +
+      escapeHtml(guestName) +
+      "</strong>!<br><br>Your preliminary response has been received.<br><br>✦ We can't wait to celebrate! ✦";
+  })
+  .catch(function() {
+    buttons.style.display = "block";
+    response.innerHTML =
+      "We couldn't send your response. Please try again.";
+  });
 }
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
 </script>
 
 </body>
